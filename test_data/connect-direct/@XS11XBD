@@ -1,0 +1,428 @@
+//IXS11XBD JOB (KRUNGSRI),'FTP-PAY             ',CLASS=4,               00030002
+//         MSGLEVEL=(1,1),MSGCLASS=Y,TIME=1440,REGION=300M              00031000
+//*
+//S00001    EXEC PGM=DMBATCH,PARM=(YYSLYNN)
+//STEPLIB   DD DSN=CONNECT.LINKLIB,DISP=SHR
+//DMPUBLIB  DD DSN=PBAY.CONNECT.PROCESS,DISP=SHR
+//          DD DSN=CONNECT.PROCESS,DISP=SHR
+//DMNETMAP  DD DSN=CONNECT.NETMAP,DISP=SHR
+//DMMSGFIL  DD DSN=CONNECT.MSG,DISP=SHR
+//DMPRINT   DD SYSOUT=*
+//SYSPRINT  DD SYSOUT=*
+//SYSIN     DD *
+ SIGNON  USERID=(MF2SI,CDIRECT)
+  SUBMIT PROC=MF2SITER CASE=YES -
+     &FR1=PPAY.DI2D.THAKSIN.AC002227.DAY%ESPSDOW# -
+     &TO1=thaksin_d1.%espsdd.p.txt -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+  SUBMIT PROC=MF2SITER CASE=YES -
+     &FR1=PPAY.DI2D.BENJAMA.AC002889.DAY%ESPSDOW# -
+     &TO1=benjama_d1.%espsdd.p.txt -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+  SUBMIT PROC=MF2SITER CASE=YES -
+     &FR1=PPAY.DI2D.RISD.AC000179.DAY%ESPSDOW# -
+     &TO1=risd_d5.%espsdd.p.txt -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+  SUBMIT PROC=MF2SITER CASE=YES -
+     &FR1=PPAY.DI2D.BW.AC023459.DAY%ESPSDOW# -
+     &TO1=bw_d2.%espsdd.p.txt -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+  SUBMIT PROC=MF2SITER CASE=YES -
+     &FR1=PPAY.DI2D.BSO.AC000540.DAY%ESPSDOW# -
+     &TO1=bso_d7.%espsdd.p.txt -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+  SUBMIT PROC=MF2SITER CASE=YES -
+     &FR1=PPAY.DI2D.BSO.AC000539.DAY%ESPSDOW# -
+     &TO1=bso_d8.%espsdd.p.txt -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+  SUBMIT PROC=MF2SITER CASE=YES -
+     &FR1=PPAY.DI2D.DBL.AC153190.DAY%ESPSDOW# -
+     &TO1=dbl_db23.%espsdd.p.txt -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+  SUBMIT PROC=MF2SITER CASE=YES -
+     &FR1=PPAY.DI2D.AON.AC118848.DAY%ESPSDOW# -
+     &TO1=aeon_d3.%espsdd.p.txt -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+  SUBMIT PROC=MF2SITER CASE=YES -
+     &FR1=PPAY.DI2D.CMG.AC006667.DAY%ESPSDOW# -
+     &TO1=cmg2_d1.%espsdd.p.txt -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+  SUBMIT PROC=MF2SITER CASE=YES -
+     &FR1=PPAY.DI2D.HKB.AC031198.DAY%ESPSDOW# -
+     &TO1=hsbc2_d1.%espsdd.p.txt -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+  SUBMIT PROC=MF2SITER CASE=YES -
+     &FR1=PPAY.DI2D.TEC.AC004602.DAY%ESPSDOW# -
+     &TO1=tec_d1.%espsdd.p.txt -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+  SUBMIT PROC=MF2SITER CASE=YES -
+     &FR1=PPAY.DI2D.DU1.AC102203.DAY%ESPSDOW# -
+     &TO1=risd_d1.%espsdd.p.txt -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+  SUBMIT PROC=MF2SITER CASE=YES -
+     &FR1=PPAY.DI2D.KPN.AC006459.DAY%ESPSDOW# -
+     &TO1=kpnc_d1.%espsdd.p.txt -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+  SUBMIT PROC=MF2SITER CASE=YES -
+     &FR1=PPAY.DI2D.CUT.AC038263.DAY%ESPSDOW# -
+     &TO1=cut_d1.%espsdd.p.txt -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+  SUBMIT PROC=MF2SITER CASE=YES -
+     &FR1=PPAY.DI2D.DB2.AC150233.DAY%ESPSDOW# -
+     &TO1=dbl_d2.%espsdd.p.txt -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+  SUBMIT PROC=MF2SITER CASE=YES -
+     &FR1=PPAY.DI2D.DB3.AC150451.DAY%ESPSDOW# -
+     &TO1=dbl_d3.%espsdd.p.txt -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+  SUBMIT PROC=MF2SITER CASE=YES -
+     &FR1=PPAY.DI2D.DB4.AC150469.DAY%ESPSDOW# -
+     &TO1=dbl_d4.%espsdd.p.txt -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+  SUBMIT PROC=MF2SITER CASE=YES -
+     &FR1=PPAY.DI2D.DB5.AC150477.DAY%ESPSDOW# -
+     &TO1=dbl_d5.%espsdd.p.txt -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+  SUBMIT PROC=MF2SITER CASE=YES -
+     &FR1=PPAY.DI2D.AI2.AC053334.DAY%ESPSDOW# -
+     &TO1=aia_d2.%espsdd.p.txt -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+  SUBMIT PROC=MF2SITER CASE=YES -
+     &FR1=PPAY.DI2D.AIA.AC010781.DAY%ESPSDOW# -
+     &TO1=aia_d6.%espsdd.p.txt -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+  SUBMIT PROC=MF2SITER CASE=YES -
+     &FR1=PPAY.DI2D.BLA.AC037495.DAY%ESPSDOW# -
+     &TO1=bla_d1.%espsdd.p.txt -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+  SUBMIT PROC=MF2SITER CASE=YES -
+     &FR1=PPAY.DI2D.SCT.AC005819.DAY%ESPSDOW# -
+     &TO1=std2_d1.%espsdd.p.txt -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+  SUBMIT PROC=MF2SITER CASE=YES -
+     &FR1=PPAY.DI2D.TEL.AC005827.DAY%ESPSDOW# -
+     &TO1=std2_d2.%espsdd.p.txt -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+  SUBMIT PROC=MF2SITER CASE=YES -
+     &FR1=PPAY.DI2D.DU2.AC102803.DAY%ESPSDOW# -
+     &TO1=risd_d2.%espsdd.p.txt -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+  SUBMIT PROC=MF2SITER CASE=YES -
+     &FR1=PPAY.DI2D.SAC.AC004863.DAY%ESPSDOW# -
+     &TO1=sac_d1.%espsdd.p.txt -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+  SUBMIT PROC=MF2SITER CASE=YES -
+     &FR1=PPAY.DI2D.VIB.AC027492.DAY%ESPSDOW# -
+     &TO1=vib_d1.%espsdd.p.txt -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+  SUBMIT PROC=MF2SITER CASE=YES -
+     &FR1=PPAY.DI2D.SIC.AC151993.DAY%ESPSDOW# -
+     &TO1=sicco_d1.%espsdd.p.txt -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+  SUBMIT PROC=MF2SITER CASE=YES -
+     &FR1=PPAY.DI2D.EIS.AC007977.DAY%ESPSDOW# -
+     &TO1=eis_d1.%espsdd.p.txt -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+  SUBMIT PROC=MF2SITER CASE=YES -
+     &FR1=PPAY.DI2D.PTC.AC026135.DAY%ESPSDOW# -
+     &TO1=ptc_d1.%espsdd.p.txt -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+  SUBMIT PROC=MF2SITER CASE=YES -
+     &FR1=PPAY.DI2D.SAM.AC155459.DAY%ESPSDOW# -
+     &TO1=sam_d1.%espsdd.p.txt -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+  SUBMIT PROC=MF2SITER CASE=YES -
+     &FR1=PPAY.DI2D.LTC.AC002129.DAY%ESPSDOW# -
+     &TO1=ltc_d1.%espsdd.p.txt -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+  SUBMIT PROC=MF2SITER CASE=YES -
+     &FR1=PPAY.DI2D.NIDA.AC049009.DAY%ESPSDOW# -
+     &TO1=nida_d1.%espsdd.p.txt -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+  SUBMIT PROC=MF2SITER CASE=YES -
+     &FR1=PPAY.DI2D.RISS.AC016002.DAY%ESPSDOW# -
+     &TO1=riss_d1.%espsdd.p.txt -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+  SUBMIT PROC=MF2SITER CASE=YES -
+     &FR1=PPAY.DI2D.HPS.AC010090.DAY%ESPSDOW# -
+     &TO1=hps_d1.%espsdd.p.txt -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+  SUBMIT PROC=MF2SITER CASE=YES -
+     &FR1=PPAY.DI2D.MTLA.AC036364.DAY%ESPSDOW# -
+     &TO1=mtla_d1.%espsdd.p.txt -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+  SUBMIT PROC=MF2SITER CASE=YES -
+     &FR1=PPAY.DI2D.MTLA.AC036364.DAY%ESPSDOW# -
+     &TO1=mtla2_d1.%espsdd.p.txt -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+  SUBMIT PROC=MF2SITER CASE=YES -
+     &FR1=PPAY.DI2D.MTLA.AC036364.DAY%ESPSDOW# -
+     &TO1=mtla3_d1.%espsdd.p.txt -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+  SUBMIT PROC=MF2SITER CASE=YES -
+     &FR1=PPAY.DI2D.RISD.AC103299.DAY%ESPSDOW# -
+     &TO1=risd_d3.%espsdd.p.txt -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+  SUBMIT PROC=MF2SITER CASE=YES -
+     &FR1=PPAY.DI2D.SSI.AC029421.DAY%ESPSDOW# -
+     &TO1=ssi_d1.%espsdd.p.txt -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+  SUBMIT PROC=MF2SITER CASE=YES -
+     &FR1=PPAY.DI2D.NARE.AC005739.DAY%ESPSDOW# -
+     &TO1=nare_d1.%espsdd.p.txt -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+  SUBMIT PROC=MF2SITER CASE=YES -
+     &FR1=PPAY.DI2D.DRT.AC012124.DAY%ESPSDOW# -
+     &TO1=drt_d1.%espsdd.p.txt -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+  SUBMIT PROC=MF2SITER CASE=YES -
+     &FR1=PPAY.DI2D.REVE.AC040006.DAY%ESPSDOW# -
+     &TO1=reve_d1.%espsdd.p.txt -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+  SUBMIT PROC=MF2SITER CASE=YES -
+     &FR1=PPAY.DI2D.RICK.AC004449.DAY%ESPSDOW# -
+     &TO1=rick_d1.%espsdd.p.txt -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+  SUBMIT PROC=MF2SITER CASE=YES -
+     &FR1=PPAY.DI2D.RIBS.AC022379.DAY%ESPSDOW# -
+     &TO1=ribs_d1.%espsdd.p.txt -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+  SUBMIT PROC=MF2SITER CASE=YES -
+     &FR1=PPAY.DI2D.RIPN.AC029097.DAY%ESPSDOW# -
+     &TO1=ripn_d1.%espsdd.p.txt -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+  SUBMIT PROC=MF2SITER CASE=YES -
+     &FR1=PPAY.DI2D.RIP.AC004302.DAY%ESPSDOW# -
+     &TO1=rip_d1.%espsdd.p.txt -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+  SUBMIT PROC=MF2SITER CASE=YES -
+     &FR1=PPAY.DI2D.HSBC.AC031156.DAY%ESPSDOW# -
+     &TO1=hsbc_d1.%espsdd.p.txt -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+  SUBMIT PROC=MF2SITER CASE=YES -
+     &FR1=PPAY.DI2D.RINR1.AC000027.DAY%ESPSDOW# -
+     &TO1=rinr_d2.%espsdd.p.txt -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+  SUBMIT PROC=MF2SITER CASE=YES -
+     &FR1=PPAY.DI2D.RINR.AC000019.DAY%ESPSDOW# -
+     &TO1=rinr_d1.%espsdd.p.txt -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+  SUBMIT PROC=MF2SITER CASE=YES -
+     &FR1=PPAY.DI2D.RINS.AC019329.DAY%ESPSDOW# -
+     &TO1=rins_d1.%espsdd.p.txt -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+  SUBMIT PROC=MF2SITER CASE=YES -
+     &FR1=PPAY.DI2D.RINS.AC019303.DAY%ESPSDOW# -
+     &TO1=rins_d2.%espsdd.p.txt -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+  SUBMIT PROC=MF2SITER CASE=YES -
+     &FR1=PPAY.DI2D.STD5.AC033936.DAY%ESPSDOW# -
+     &TO1=std_d5.%espsdd.p.txt -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+  SUBMIT PROC=MF2SITER CASE=YES -
+     &FR1=PPAY.DI2D.STD4.AC033910.DAY%ESPSDOW# -
+     &TO1=std_d4.%espsdd.p.txt -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+  SUBMIT PROC=MF2SITER CASE=YES -
+     &FR1=PPAY.DI2D.STD3.AC033896.DAY%ESPSDOW# -
+     &TO1=std_d3.%espsdd.p.txt -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+  SUBMIT PROC=MF2SITER CASE=YES -
+     &FR1=PPAY.DI2D.BTC3.AC035009.DAY%ESPSDOW# -
+     &TO1=btc_d1.%espsdd.p.txt -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+  SUBMIT PROC=MF2SITER CASE=YES -
+     &FR1=PPAY.DI2D.ABAC.AC000400.DAY%ESPSDOW# -
+     &TO1=abac_d3.%espsdd.p.txt -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+  SUBMIT PROC=MF2SITER CASE=YES -
+     &FR1=PPAY.DI2D.RIY.AC011814.DAY%ESPSDOW# -
+     &TO1=riy_d1.%espsdd.p.txt -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+  SUBMIT PROC=MF2SITER CASE=YES -
+     &FR1=PPAY.DI2D.MEA.AC032232.DAY%ESPSDOW# -
+     &TO1=mea_d1.%espsdd.p.txt -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+  SUBMIT PROC=MF2SITER CASE=YES -
+     &FR1=PPAY.DI2D.POTINIM.AC016993.DAY%ESPSDOW# -
+     &TO1=potinim_d1.%espsdd.p.txt -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+  SUBMIT PROC=MF2SITER CASE=YES -
+     &FR1=PPAY.DI2D.PATTRA.AC006209.DAY%ESPSDOW# -
+     &TO1=pattra_d1.%espsdd.p.txt -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+  SUBMIT PROC=MF2SITER CASE=YES -
+     &FR1=PPAY.DI2D.TRUECOM.AC022481.DAY%ESPSDOW# -
+     &TO1=truecom_d1.%espsdd.p -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+  SUBMIT PROC=MF2SITER CASE=YES -
+     &FR1=PPAY.DI2D.AIANL.AC007299.DAY%ESPSDOW# -
+     &TO1=aianl_d1.%espsdd.p.txt -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+  SUBMIT PROC=MF2SITER CASE=YES -
+     &FR1=PPAY.DI2D.NPU.AC000629.DAY%ESPSDOW# -
+     &TO1=npu_ac000629.%espsdd.p.txt -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+  SUBMIT PROC=MF2SITER CASE=YES -
+     &FR1=PPAY.DI2D.SRN.AC000107.DAY%ESPSDOW# -
+     &TO1=srn_ac000107.%espsdd.p.txt -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+  SUBMIT PROC=MF2SITER CASE=YES -
+     &FR1=PPAY.DI2D.CRMA.AC000878.DAY%ESPSDOW# -
+     &TO1=crma_ac000878.%espsdd.p.txt -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+  SUBMIT PROC=MF2SITER CASE=YES -
+     &FR1=PPAY.DI2D.KUMON37.AC003528.DAY%ESPSDOW# -
+     &TO1=kumon37_ac003528.%espsdd.p.txt -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+  SUBMIT PROC=MF2SITER CASE=YES -
+     &FR1=PPAY.DI2D.KUMONSNR.AC003137.DAY%ESPSDOW# -
+     &TO1=kumonsnr_ac003137.%espsdd.p.txt -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+  SUBMIT PROC=MF2SITER CASE=YES -
+     &FR1=PPAY.DI2D.SKNTC.AC000407.DAY%ESPSDOW# -
+     &TO1=skntc_ac000407.%espsdd.p.txt -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+  SUBMIT PROC=MF2SITER CASE=YES -
+     &FR1=PPAY.DI2D.ASHOME.AC000278.DAY%ESPSDOW# -
+     &TO1=ashome_ac000278.%espsdd.p.txt -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+ SIGNOFF

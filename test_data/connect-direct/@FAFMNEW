@@ -1,0 +1,36 @@
+//IFAFMNEW JOB (KRUNGSRI),'FMS-TO-AYCAL        ',CLASS=4,               00030001
+//         MSGLEVEL=(1,1),MSGCLASS=Y,TIME=1440,REGION=0M                00031000
+//* -------------------------------------------------------------------
+//*     PUT FILE TO SERVER AYCAL AFTER IFMJDNEW
+//* -------------------------------------------------------------------
+//DELDSN   EXEC PGM=IEFBR14,COND=(0,NE)
+//DD0      DD DSN=PPTF.CD.IFAFMNEW.D%NYMDP7D,
+//         DISP=(MOD,DELETE,DELETE),
+//         UNIT=SYSDA,SPACE=(TRK,0)
+//         DD DSN=PPTF.CD.IFAFMNEW.D%NYMDT0D,
+//         DISP=(MOD,DELETE,DELETE),
+//         UNIT=SYSDA,SPACE=(TRK,0)
+//*                                                                     00030000
+//PUTFILE  EXEC PGM=DMBATCH,PARM=(YYSLYNN)
+//STEPLIB  DD DSN=CONNECT.LINKLIB,DISP=SHR
+//DMPUBLIB DD DSN=PBAY.CONNECT.PROCESS,DISP=SHR
+//         DD DSN=CONNECT.PROCESS,DISP=SHR
+//DMNETMAP DD DSN=CONNECT.NETMAP,DISP=SHR
+//DMMSGFIL DD DSN=CONNECT.MSG,DISP=SHR
+//DMPRINT  DD SYSOUT=*
+//SYSPRINT DD SYSOUT=*
+//SYSIN    DD *
+ SIGNON  USERID=(CDSADMIN,DIRECT)
+    SUBMIT PROC=MF2SU1   PNODE=BAY2                                 -
+                         SNODE=ERPDB                                -
+     &FR1=plfm.dbat2.samf.nxxrtm.v.sumout.rate.day%curr -
+     &TO1=\'/transfer/\    ||                                       -
+          \fmsjnew_%nymdt0d..txt'\                      -
+     CASE=YES                                                       -
+     CLASS=4                                                        -
+     NEWNAME=IFAFMNEW                                               -
+     &JOBNM=IFAFMNEW                                                -
+     &SBLANKS=YES                                                   -
+     &TRIDSN=PPTF.CD.IFAFMNEW.D%NYMDT0D
+ SIGNOFF
+//*

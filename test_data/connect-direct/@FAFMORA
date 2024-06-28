@@ -1,0 +1,76 @@
+//IFAFMORA JOB (KRUNGSRI),'ORACAL TO FMS       ',CLASS=4,               00030001
+//         MSGLEVEL=(1,1),MSGCLASS=Y,TIME=1440,REGION=0M                00031000
+//* -------------------------------------------------------------------
+//*     GET FILE FROM OUTBOUND TO IFMDOR01
+//* -------------------------------------------------------------------
+//*                                                                     00031700
+//DELDSN   EXEC PGM=IEFBR14,COND=(0,NE)
+//DD0      DD DSN=PPTF.CD.IFAFMORA.D%NYMDP7D,
+//         DISP=(MOD,DELETE,DELETE),
+//         UNIT=SYSDA,SPACE=(TRK,0)
+//         DD DSN=PPTF.CD.IFAFMORA.D%NYMDT0D,
+//         DISP=(MOD,DELETE,DELETE),
+//         UNIT=SYSDA,SPACE=(TRK,0)
+//DD1      DD DSN=PLFM.DBAT.SAMF.FMSDTB.FR.ORACLE.D%NYMDP7D,
+//         DISP=(MOD,DELETE,DELETE),
+//         UNIT=SYSDA,SPACE=(TRK,0)
+//         DD DSN=PLFM.DBAT.SAMF.FMSDTB.FR.ORACLE.D%NYMDP1D,
+//         DISP=(MOD,DELETE,DELETE),
+//         UNIT=SYSDA,SPACE=(TRK,0)
+//         DD DSN=PLFM.DBAT.SAMF.FMSDTB.FR.ORACLE.D%NYMDT0D,
+//         DISP=(MOD,DELETE,DELETE),
+//         UNIT=SYSDA,SPACE=(TRK,0)
+//*
+//ALLOCATE EXEC PGM=IEFBR14,COND=(0,NE)          +DYYMMDD-Today+
+//FNAME    DD DSN=PLFM.DBAT.SAMF.FMSDTB.FR.ORACLE.D%NYMDP1D,
+//         DISP=(,CATLG),UNIT=SYSDA,
+//         SPACE=(CYL,(10,15)),
+//         DCB=(LRECL=150,BLKSIZE=0,RECFM=FB,DSORG=PS)
+//         DD DSN=PLFM.DBAT.SAMF.FMSDTB.FR.ORACLE.D%NYMDT0D,
+//         DISP=(,CATLG),UNIT=SYSDA,
+//         SPACE=(CYL,(10,15)),
+//         DCB=(LRECL=150,BLKSIZE=0,RECFM=FB,DSORG=PS)
+//*
+//GETFILE  EXEC PGM=DMBATCH,PARM=(YYSLYNN),COND=(0,NE)
+//STEPLIB  DD DSN=CONNECT.LINKLIB,DISP=SHR
+//DMPUBLIB DD DSN=PBAY.CONNECT.PROCESS,DISP=SHR
+//         DD DSN=CONNECT.PROCESS,DISP=SHR
+//DMNETMAP DD DSN=CONNECT.NETMAP,DISP=SHR
+//DMMSGFIL DD DSN=CONNECT.MSG,DISP=SHR
+//DMPRINT  DD SYSOUT=*
+//SYSPRINT DD SYSOUT=*
+//SYSIN    DD *
+ SIGNON  USERID=(CDSADMIN,DIRECT)
+    SUBMIT PROC=SU2MF2   PNODE=BAY2                                 -
+                         SNODE=BAYERPUPDB1                          -
+     &FR1=\'/pp2pdb/batch/outbound/BAY/\             ||             -
+          \TB%ndmap1d..txt'\                                        -
+     &TO1=PLFM.DBAT.SAMF.FMSDTB.FR.ORACLE.D%NYMDP1D                 -
+     &FR2=\'/pp2pdb/batch/outbound/BAY/\             ||             -
+          \TB%ndmat0d..txt'\                                        -
+     &TO2=PLFM.DBAT.SAMF.FMSDTB.FR.ORACLE.D%NYMDT0D                 -
+     CASE=YES                                                       -
+     NEWNAME=IFAFMORA                                               -
+     &JOBNM=IFAFMORA                                                -
+     &SBLANKS=YES                                                   -
+     &TRIDSN=PPTF.CD.IFAFMORA.D%NYMDT0D
+ SIGNOFF
+//*
+//
+ SIGNON  USERID=(CDSADMIN,DIRECT)
+    SUBMIT PROC=SU2MF2   PNODE=BAY2                                 -
+                         SNODE=ERPDB                                -
+     &FR1=\'/erpdb/prod/interface/outbound/BAY0/\    ||             -
+          \TB%ndmap1d..txt'\                         -
+     &TO1=plfm.dbat.samf.fmsdtb.fr.oracle.d%nymdp1d  -
+     &FR2=\'/erpdb/prod/interface/outbound/BAY0/\    ||             -
+          \TB%ndmat0d..txt'\                         -
+     &TO2=plfm.dbat.samf.fmsdtb.fr.oracle.d%nymdt0d  -
+     CASE=YES                                                       -
+     CLASS=4                                                        -
+     NEWNAME=IFAFMORA                                               -
+     &JOBNM=IFAFMORA                                                -
+     &SBLANKS=YES                                                   -
+     &TRIDSN=PPTF.CD.IFAFMORA.D%NYMDT0D
+ SIGNOFF
+//*

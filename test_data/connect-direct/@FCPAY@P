@@ -1,0 +1,32 @@
+//IFCPAY@P JOB (KRUNGSRI),'PAY@POST            ',CLASS=4,               00030000
+//         MSGLEVEL=(1,1),MSGCLASS=Y,TIME=1440,REGION=300M              00031000
+//*                                                                     00031700
+//********************************************************************* 00031700
+//* GET FILE PAY@POST TO HOST FROM BAYKDE
+//********************************************************************* 00031700
+//*
+//STEPFTP JCLLIB ORDER=(PPTF.PROCLIB.MASTER)
+//*STEPFTP JCLLIB ORDER=(IESP.PROCLIB.PROD2)
+//*
+//DELDSN1  EXEC  PGM=IEFBR14
+//DD1   DD  DISP=(MOD,DELETE,DELETE),
+//      DSN=PPTF.ALS2.H09500.H09500.POST%ESPSMM%ESPSDD..D%NYMDP7D..H,
+//      UNIT=SYSDA,
+//      SPACE=(TRK,0)
+/*
+//ALLOC01  EXEC  PGM=IEFBR14,COND=(0,NE)
+//DD1   DD  DISP=(,CATLG),
+//      DSN=PPTF.ALS2.H09500.H09500.POST%ESPSMM%ESPSDD..D%NYMDT0D..H,
+//      UNIT=SYSDA,
+//      SPACE=(CYL,(2,1)),
+//      DCB=(LRECL=176,BLKSIZE=0,RECFM=FB,DSORG=PS)
+//*
+//BAYKDE  EXEC BAYKDE
+//INPUT    DD *
+cd /downloadinter/h09500
+lcd 'pptf.als2.h09500.h09500.post%espsmm%espsdd'
+ascii
+sendsite
+get date_%nymdt0d._h09500_bay_bank%namdt0d..txt d%nymdt0d..h (replace
+quit
+//

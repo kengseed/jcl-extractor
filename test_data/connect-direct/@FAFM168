@@ -1,0 +1,39 @@
+//IFAFM168 JOB (KRUNGSRI),'FMS-TO-AYCAL        ',CLASS=4,               00030001
+//         MSGLEVEL=(1,1),MSGCLASS=Y,TIME=1440,REGION=0M                00031000
+//* -------------------------------------------------------------------
+//*     PUT FILE TO SERVER AYCAL AFTER IFMJD168
+//* -------------------------------------------------------------------
+//DELDSN   EXEC PGM=IEFBR14,COND=(0,NE)
+//DD0      DD DSN=PPTF.CD.IFAFM168.D%NYMDP7D,
+//         DISP=(MOD,DELETE,DELETE),
+//         UNIT=SYSDA,SPACE=(TRK,0)
+//         DD DSN=PPTF.CD.IFAFM168.D%NYMDT0D,
+//         DISP=(MOD,DELETE,DELETE),
+//         UNIT=SYSDA,SPACE=(TRK,0)
+//*                                                                     00030000
+//PUTFILE  EXEC PGM=DMBATCH,PARM=(YYSLYNN)
+//STEPLIB  DD DSN=CONNECT.LINKLIB,DISP=SHR
+//DMPUBLIB DD DSN=PBAY.CONNECT.PROCESS,DISP=SHR
+//         DD DSN=CONNECT.PROCESS,DISP=SHR
+//DMNETMAP DD DSN=CONNECT.NETMAP,DISP=SHR
+//DMMSGFIL DD DSN=CONNECT.MSG,DISP=SHR
+//DMPRINT  DD SYSOUT=*
+//SYSPRINT DD SYSOUT=*
+//SYSIN    DD *
+ SIGNON  USERID=(CDSADMIN,DIRECT)
+    SUBMIT PROC=MF2SU2   PNODE=BAY2                                 -
+                         SNODE=ERPDB                                -
+     &FR1=plfm.dbat2.samf.fmsdsub.oracle.subacct.day%curr -
+     &TO1=\'/transfer/\    ||                                       -
+          \fmsj168_subacct_%nymdt0d..txt'\                -
+     &FR2=plfm.dbat2.samf.fmsdsub.oracle.error.day%curr   -
+     &TO2=\'/transfer/\    ||                                       -
+          \fmsj168_error_%nymdt0d..txt'\                  -
+     CASE=YES                                                       -
+     CLASS=4                                                        -
+     NEWNAME=IFAFM168                                               -
+     &JOBNM=IFAFM168                                                -
+     &SBLANKS=YES                                                   -
+     &TRIDSN=PPTF.CD.IFAFM168.D%NYMDT0D
+ SIGNOFF
+//*

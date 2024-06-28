@@ -1,0 +1,23 @@
+//IASFT018 JOB (KRUNGSRI),'FTP-LNS             ',CLASS=4,               00030001
+//         MSGLEVEL=(1,1),MSGCLASS=Y,TIME=1440,REGION=0M                00031000
+//* ********************                                                00031000
+//* RUN AFTER IASDDUS0 *                                                00031000
+//* ********************                                                00031000
+//S00001    EXEC PGM=DMBATCH,PARM=(YYSLYNN)
+//STEPLIB   DD DSN=CONNECT.LINKLIB,DISP=SHR
+//DMPUBLIB  DD DSN=PBAY.CONNECT.PROCESS,DISP=SHR
+//          DD DSN=CONNECT.PROCESS,DISP=SHR
+//DMNETMAP  DD DSN=CONNECT.NETMAP,DISP=SHR
+//DMMSGFIL  DD DSN=CONNECT.MSG,DISP=SHR
+//DMPRINT   DD SYSOUT=*
+//SYSPRINT  DD SYSOUT=*
+//SYSIN     DD *
+ SIGNON  USERID=(MF2SI,CDIRECT)
+  SUBMIT PROC=MF2SITRA CASE=YES -
+     &FR1=PSD6.AM.AM.T00.AMCRD6.AMPBDUS0.D%NYMDT0D -
+     &TO1=DUTYSTM_stamp_duty_D%NYMDT0D..txt -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=YES
+ SIGNOFF
+//*

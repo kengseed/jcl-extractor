@@ -1,0 +1,28 @@
+//IASFT013 JOB (KRUNGSRI),'IASFT013            ',CLASS=4,               00030003
+//         MSGLEVEL=(1,1),MSGCLASS=Y,TIME=1440,REGION=0M                00031000
+//****************************
+//*  RUN AFTER JOB IASDXT13  *
+//****************************
+//S00001    EXEC PGM=DMBATCH,PARM=(YYSLYNN)
+//STEPLIB   DD DSN=CONNECT.LINKLIB,DISP=SHR
+//DMPUBLIB  DD DSN=PBAY.CONNECT.PROCESS,DISP=SHR
+//          DD DSN=CONNECT.PROCESS,DISP=SHR
+//DMNETMAP  DD DSN=CONNECT.NETMAP,DISP=SHR
+//DMMSGFIL  DD DSN=CONNECT.MSG,DISP=SHR
+//DMPRINT   DD SYSOUT=*
+//SYSPRINT  DD SYSOUT=*
+//SYSIN     DD *
+ SIGNON  USERID=(MF2SI,CDIRECT)
+  SUBMIT PROC=MF2SITRA CASE=YES -
+     &FR1=PSD6.AM.AM.T00.PNTRAN.TO.KDE.D%NYMDT0D -
+     &TO1=H148056_PN_TRANS_D%NYMDT0D..txt     -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+  SUBMIT PROC=MF2SITRA CASE=YES -
+     &FR1=PSD6.AM.AM.T00.PNOUTS.TO.KDE.D%NYMDT0D -
+     &TO1=H148056_PN_OUTS_D%NYMDT0D..txt      -
+     NEWNAME=%ESPAPJOB                                       -
+     &JOBNM=%ESPAPJOB                                        -
+     &SBLANKS=NO
+ SIGNOFF

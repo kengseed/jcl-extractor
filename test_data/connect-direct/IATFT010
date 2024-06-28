@@ -1,0 +1,38 @@
+//IATFT010 JOB (KRUNGSRI),'SENT FILE TO EDM    ',CLASS=4,
+//         MSGLEVEL=(1,1),MSGCLASS=Y,TIME=1440,REGION=0M
+//*-------------------------------*
+//*-RECEIVE FILE FROM JOB IATDE04 *
+//*-------------------------------*
+//DELDSN   EXEC PGM=IEFBR14,COND=(0,NE)
+//DD0      DD DSN=PPTF.CD.IATFT010.D%NYMDP7D,
+//         DISP=(MOD,DELETE,DELETE),
+//         UNIT=SYSDA,SPACE=(TRK,0)
+//         DD DSN=PPTF.CD.IATFT010.D%NYMDT0D,
+//         DISP=(MOD,DELETE,DELETE),
+//         UNIT=SYSDA,SPACE=(TRK,0)
+//*                                                                     00030000
+//PUTFILE  EXEC PGM=DMBATCH,PARM=(YYSLYNN)
+//STEPLIB  DD DSN=CONNECT.LINKLIB,DISP=SHR
+//DMPUBLIB DD DSN=PBAY.CONNECT.PROCESS,DISP=SHR
+//         DD DSN=CONNECT.PROCESS,DISP=SHR
+//DMNETMAP DD DSN=CONNECT.NETMAP,DISP=SHR
+//DMMSGFIL DD DSN=CONNECT.MSG,DISP=SHR
+//DMPRINT  DD SYSOUT=*
+//SYSPRINT DD SYSOUT=*
+//SYSIN    DD *
+    SIGNON  USERID=(CDSADMIN,DIRECT)
+      SUBMIT PROC=MF2SU2  PNODE=BAY2                       -
+                          SNODE=BAYINFODS-PROD             -
+      &FR1=PAUT.DBAT2.DE105.SAMF.EDM.DATA.D%NYMDT0D        -
+      &TO1=\'/edmftu/edmprod/src_dir/aut/daily/\      ||   -
+           \AUT_AUTDE105_%HAMDT0D._000000.000000.dat'\ -
+      &FR2=PAUT.DBAT2.DC105.SAMF.EDM.CTL.D%NYMDT0D         -
+      &TO2=\'/edmftu/edmprod/src_dir/aut/daily/\      ||   -
+           \AUT_AUTDE105_%HAMDT0D._000000.000000.ctl'\ -
+      CASE=YES                                             -
+      NEWNAME=IATFT010                                     -
+      &JOBNM=IATFT010                                      -
+      &SBLANKS=YES                                         -
+      &TRIDSN=PPTF.CD.IATFT010.D%NYMDT0D
+ SIGNOFF
+//*
