@@ -1,10 +1,30 @@
 import sys
+import os
+import datetime
 import pathlib
+import shutil
+import csv
 
 
 def getFiles(directory):
     files = [f for f in pathlib.Path(directory).iterdir() if f.is_file()]
     return files
+
+
+def writeDataToCsv(data, fileName):
+    currentTime = datetime.datetime().now().strftime("%Y%m%d%H%M%S")
+    outputFileName = currentTime + "_" + fileName
+
+    with open(outputFileName, "w", newline="", encoding="utf-8") as file:
+        writer = csv.DictWriter(
+            file,
+            fieldnames=["jobName", "sourceFileName", "targetFileName", "sNode"],
+        )
+
+        writer.writeheader()
+        writer.writerows(data)
+
+    return outputFileName
 
 
 def extractScriptToCsv(directory):

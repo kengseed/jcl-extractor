@@ -11,7 +11,9 @@
             "program": "${file}",
             "console": "integratedTerminal",
             "args": [
-                "C:/_Source Code/Python/jcl-extractor/test_data/connect-direct"
+                "C:/_Source Code/Python/jcl-extractor/test_data/connect-direct",
+                "C:/_Private Share/_acn_share/BAY Jupiter/Batch/JCL Extract/Connect Direct/20240628_Connect_Direct_Extract_Status.csv",
+                "C:/_Private Share/_acn_share/BAY Jupiter/Batch/JCL Extract/Connect Direct/from-kde-report"
             ]
         }
     ]
