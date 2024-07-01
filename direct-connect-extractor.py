@@ -45,28 +45,33 @@ def generalCleanupContent(content: str):
 
     if contentResult.endswith("-"):
         contentResult = contentResult[0 : len(contentResult) - 1].strip()
-        if contentResult.strip().endswith("||"):
-            contentResult = contentResult[0 : len(contentResult) - 2].strip()
 
     return contentResult
 
 
-def cleanupContent(content: str, index: int) -> str:
+def sourceTargetCleanupContent(
+    contents: list[str], mainIndex: int, variableIndex: int
+) -> str:
     # Replace &FR
-    contentResult = content.strip().replace(("&FR{index}=").format(index=index), "")
-    # contentResult = contentResult.strip().replace(
-    #     ("&FR{index}=\'").format(index=index), ""
-    # )
+    contentResult = (
+        contents[mainIndex]
+        .strip()
+        .replace(("&FR{index}=").format(index=variableIndex), "")
+    )
 
     # Replace &TO
     contentResult = contentResult.strip().replace(
-        ("&TO{index}=").format(index=index), ""
+        ("&TO{index}=").format(index=variableIndex), ""
     )
-    # contentResult = contentResult.strip().replace(
-    #     ("&TO{index}=\\'").format(index=index), ""
-    # )
 
-    return generalCleanupContent(contentResult)
+    contentResult = generalCleanupContent(contentResult)
+
+    # Check endswith '||' (Have next lines)
+    if contentResult.strip().endswith("||"):
+        contentResult = contentResult[0 : len(contentResult) - 2].strip()
+        contentResult = contentResult + generalCleanupContent(contents[mainIndex + 1])
+
+    return contentResult
 
 
 def extractScriptToCsv(directory):
@@ -79,62 +84,128 @@ def extractScriptToCsv(directory):
             # content = fp.read()
             lines = fp.readlines()
 
-            # Find keywords "PNODE=" (Excluded comment lines)
-            pNodeKeywordResults = list(
-                filter(
-                    lambda c: str(c).find("PNODE=") > -1
-                    and not str(c).strip().startswith("//")
-                    and not str(c).strip().startswith("/*"),
-                    lines,
-                )
-            )
-            # Find keywords "SNODE=" (Excluded comment lines)
-            sNodeKeywordResults = list(
-                filter(
-                    lambda c: str(c).find("SNODE=") > -1
-                    and not str(c).strip().startswith("//")
-                    and not str(c).strip().startswith("/*"),
-                    lines,
-                )
-            )
             # Find keywords "&FR" (Excluded comment lines)
-            frKeywordResults = list(
+            # frKeywordResults = list(
+            #     filter(
+            #         lambda c: str(c).find("&FR") > -1
+            #         and not str(c).strip().startswith("//")
+            #         and not str(c).strip().startswith("/*"),
+            #         lines,
+            #     )
+            # )
+            frKeywordIndexes = list(
                 filter(
-                    lambda c: str(c).find("&FR") > -1
-                    and not str(c).strip().startswith("//")
-                    and not str(c).strip().startswith("/*"),
-                    lines,
+                    lambda i: lines[i].find("&FR") > -1
+                    and not lines[i].strip().startswith("//")
+                    and not lines[i].strip().startswith("/*"),
+                    range(len(lines)),
                 )
             )
+
             # Find keywords "&TO" (Excluded comment lines)
-            toKeywordResults = list(
+            # toKeywordResults = list(
+            #     filter(
+            #         lambda c: str(c).find("&TO") > -1
+            #         and not str(c).strip().startswith("//")
+            #         and not str(c).strip().startswith("/*"),
+            #         lines,
+            #     )
+            # )
+            toKeywordIndexes = list(
                 filter(
-                    lambda c: str(c).find("&TO") > -1
-                    and not str(c).strip().startswith("//")
-                    and not str(c).strip().startswith("/*"),
-                    lines,
+                    lambda i: lines[i].find("&TO") > -1
+                    and not lines[i].strip().startswith("//")
+                    and not lines[i].strip().startswith("/*"),
+                    range(len(lines)),
+                )
+            )
+
+            # Find keywords "PNODE=" (Excluded comment lines)
+            # pNodeKeywordResults = list(
+            #     filter(
+            #         lambda c: str(c).find("PNODE=") > -1
+            #         and not str(c).strip().startswith("//")
+            #         and not str(c).strip().startswith("/*"),
+            #         lines,
+            #     )
+            # )
+            pNodeKeywordIndexes = list(
+                filter(
+                    lambda i: lines[i].find("PNODE=") > -1
+                    and not lines[i].strip().startswith("//")
+                    and not lines[i].strip().startswith("/*"),
+                    range(len(lines)),
+                )
+            )
+
+            # Find keywords "SNODE=" (Excluded comment lines)
+            # sNodeKeywordResults = list(
+            #     filter(
+            #         lambda c: str(c).find("SNODE=") > -1
+            #         and not str(c).strip().startswith("//")
+            #         and not str(c).strip().startswith("/*"),
+            #         lines,
+            #     )
+            # )
+            sNodeKeywordIndexes = list(
+                filter(
+                    lambda i: lines[i].find("SNODE=") > -1
+                    and not lines[i].strip().startswith("//")
+                    and not lines[i].strip().startswith("/*"),
+                    range(len(lines)),
                 )
             )
 
             # Looping &FR keywords
-            for i in range(len(frKeywordResults)):
+            # for i in range(len(frKeywordResults)):
+            #     fileContents.append(
+            #         {
+            #             "jobName": pathlib.Path(f).stem,
+            #             "sourceFileName": sourceTargetCleanupContent(
+            #                 frKeywordResults, i
+            #             ),
+            #             "targetFileName": sourceTargetCleanupContent(
+            #                 toKeywordResults, i
+            #             ),
+            #             "pNode": (
+            #                 generalCleanupContent(pNodeKeywordResults[0])
+            #                 if len(pNodeKeywordResults) > 0
+            #                 else ""
+            #             ),
+            #             "sNode": (
+            #                 generalCleanupContent(sNodeKeywordResults[0])
+            #                 if len(sNodeKeywordResults) > 0
+            #                 else ""
+            #             ),
+            #         }
+            #     )
+
+            variableIndex = 1
+
+            for mainIndex in frKeywordIndexes:
                 fileContents.append(
                     {
                         "jobName": pathlib.Path(f).stem,
-                        "sourceFileName": cleanupContent(frKeywordResults[i], i + 1),
-                        "targetFileName": cleanupContent(toKeywordResults[i], i + 1),
+                        "sourceFileName": sourceTargetCleanupContent(
+                            lines, mainIndex, variableIndex
+                        ),
+                        "targetFileName": sourceTargetCleanupContent(
+                            lines, toKeywordIndexes[variableIndex - 1], variableIndex
+                        ),
                         "pNode": (
-                            generalCleanupContent(pNodeKeywordResults[0])
-                            if len(pNodeKeywordResults) > 0
+                            generalCleanupContent(lines[pNodeKeywordIndexes[0]])
+                            if len(pNodeKeywordIndexes) > 0
                             else ""
                         ),
                         "sNode": (
-                            generalCleanupContent(sNodeKeywordResults[0])
-                            if len(sNodeKeywordResults) > 0
+                            generalCleanupContent(lines[sNodeKeywordIndexes[0]])
+                            if len(sNodeKeywordIndexes) > 0
                             else ""
                         ),
                     }
                 )
+                if variableIndex < len(frKeywordIndexes):
+                    variableIndex += 1
 
     # Write to CSV file
     writeDataToCsv(fileContents, "direct-connect-extracted.csv")
