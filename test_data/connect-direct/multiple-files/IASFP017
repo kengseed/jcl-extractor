@@ -1,0 +1,43 @@
+//IASFP017 JOB (KRUNGSRI),'PUT-FILE-TO-SERVER  ',CLASS=4,
+//         MSGLEVEL=(1,1),MSGCLASS=Y,TIME=1440,REGION=500M
+//*                                                                     00031799
+//  EXPORT SYMLIST=(REG)
+//SETREG SET REG=P     /* REGION RUN */
+//SETXEG SET XEG=P     /* POINT TO ORGINAL MODEL */
+//SETZEG SET ZEG=P     /* INTERFACE REGION RUN */
+//*
+//*---------------------------------------------------------------------
+//*- AFTER JOB IASDSMS3 ------------------------------------------------
+//*  PUT TO BAYKBOWDBCK01 : 192.168.62.204
+//*---------------------------------------------------------------------
+//DELDSN   EXEC PGM=IEFBR14,COND=(0,NE)
+//DD0      DD DSN=&REG.PTF.CD.IASFP017.D%NYMDP5W,
+//         DISP=(MOD,DELETE,DELETE),
+//         UNIT=SYSDA,SPACE=(TRK,0)
+//         DD DSN=&REG.PTF.CD.IASFP017.D%NYMDT0D,
+//         DISP=(MOD,DELETE,DELETE),
+//         UNIT=SYSDA,SPACE=(TRK,0)
+//*                                                                     00030000
+//PUTFILE  EXEC PGM=DMBATCH,PARM=(YYSLYNN)
+//STEPLIB  DD DSN=CONNECT.LINKLIB,DISP=SHR
+//DMPUBLIB DD DSN=PBAY.CONNECT.PROCESS,DISP=SHR
+//         DD DSN=CONNECT.PROCESS,DISP=SHR
+//DMNETMAP DD DSN=CONNECT.NETMAP,DISP=SHR
+//DMMSGFIL DD DSN=CONNECT.MSG,DISP=SHR
+//DMPRINT  DD SYSOUT=*
+//SYSPRINT DD SYSOUT=*
+//SYSIN    DD *,SYMBOLS=JCLONLY
+ SIGNON  USERID=(CDSADMIN,DIRECT)
+     SUBMIT PROC=MF2SW1   PNODE=BAY2                         -
+                          SNODE=BAYKBOWDBCK01                -
+      &FR1=&REG.SD6.AM.AM.T00.AMSMSC.AMPBSMS3.D%NYMDT0D      -
+      &TO1=\'D:\\Data\\KBOLConsole.PushNotification.\     || -
+           \LoanAlert\\Data\\\                            || -
+       \&REG.SD6.AM.AM.T00.AMSMSC.AMPBSMS3.D%NYMDT0D..TXT'\  -
+      CASE=YES                                               -
+      NEWNAME=IASFP017                                       -
+      &JOBNM=IASFP017                                        -
+      &SBLANKS=NO                                            -
+      &TRIDSN=&REG.PTF.CD.IASFP017.D%NYMDT0D
+ SIGNOFF
+//*

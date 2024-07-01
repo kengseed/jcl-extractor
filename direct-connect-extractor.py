@@ -41,7 +41,8 @@ def writeDataToCsv(data, fileName):
 
 
 def generalCleanupContent(content: str):
-    contentResult = content.strip().replace("\\", "")
+    # contentResult = content.strip().replace("\\", "")
+    contentResult = content.strip()
 
     if contentResult.endswith("-"):
         contentResult = contentResult[0 : len(contentResult) - 1].strip()
@@ -70,6 +71,18 @@ def sourceTargetCleanupContent(
     if contentResult.strip().endswith("||"):
         contentResult = contentResult[0 : len(contentResult) - 2].strip()
         contentResult = contentResult + generalCleanupContent(contents[mainIndex + 1])
+
+        if contentResult.strip().endswith("||"):
+            contentResult = contentResult[0 : len(contentResult) - 2].strip()
+            contentResult = contentResult + generalCleanupContent(
+                contents[mainIndex + 2]
+            )
+
+            if contentResult.strip().endswith("||"):
+                contentResult = contentResult[0 : len(contentResult) - 2].strip()
+                contentResult = contentResult + generalCleanupContent(
+                    contents[mainIndex + 3]
+                )
 
     return contentResult
 
