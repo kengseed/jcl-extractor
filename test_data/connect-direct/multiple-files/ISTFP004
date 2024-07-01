@@ -1,0 +1,52 @@
+//%REX.STFP004 JOB (KRUNGSRI),'SENT FILE TO SERVER ',CLASS=4,           00030099
+//         MSGLEVEL=(1,1),MSGCLASS=Y,TIME=1440,REGION=500M              00031099
+//*                                                                     00031799
+//  EXPORT SYMLIST=(REG)
+//SETREG   SET REG=%REG     /* REGION RUN */
+//SETXEG   SET XEG=%XEG     /* POINT TO ORGINAL MODEL */
+//SETZEG   SET ZEG=%ZEG     /* INTERFACE REGION RUN */
+//*                                                                     00031799
+//*---------------------------------------------------------------------
+//*  AFTER JOB ISTMP22,ISTMP23
+//*  PUT FILE TO SERVER BAYDAPUPEDG01 (192.168.225.4)
+//*---------------------------------------------------------------------
+//*                                                                     00031799
+//DELDSN   EXEC PGM=IEFBR14,COND=(0,NE)
+//DD0      DD DSN=&REG.PTF.CD.%ESPAPJOB..D%NYMDP7D,
+//         DISP=(MOD,DELETE,DELETE),
+//         UNIT=SYSDA,SPACE=(TRK,0)
+//         DD DSN=&REG.PTF.CD.%ESPAPJOB..D%NYMDT0D,
+//         DISP=(MOD,DELETE,DELETE),
+//         UNIT=SYSDA,SPACE=(TRK,0)
+//*                                                                     00030000
+//PUTFILE  EXEC PGM=DMBATCH,PARM=(YYSLYNN)
+//STEPLIB  DD DSN=CONNECT.LINKLIB,DISP=SHR
+//DMPUBLIB DD DSN=PBAY.CONNECT.PROCESS,DISP=SHR
+//         DD DSN=CONNECT.PROCESS,DISP=SHR
+//DMNETMAP DD DSN=CONNECT.NETMAP,DISP=SHR
+//DMMSGFIL DD DSN=CONNECT.MSG,DISP=SHR
+//DMPRINT  DD SYSOUT=*
+//SYSPRINT DD SYSOUT=*
+//SYSIN    DD *,SYMBOLS=JCLONLY
+ SIGNON  USERID=(CDSADMIN,DIRECT)
+     SUBMIT PROC=MF2SU4   PNODE=BAY2                              -
+                          SNODE=BAYDAPUPEDG01                     -
+      &FR1=&REG.SP6.ST.ST.B00.STSARED.STYP22.D%NYMDT0D            -
+      &TO1=\'/nfs/msa/daplanding/ks/prd/lnd/st/yearly/\ ||        -
+           \STSA_PDPA_RETENTIONLOG_%HAMDT0D._000000.000000.dat'\  -
+      &FR2=&REG.SP6.ST.ST.B00.STSACNTL.STYP22.D%NYMDT0D           -
+      &TO2=\'/nfs/msa/daplanding/ks/prd/lnd/st/yearly/\ ||        -
+           \STSA_PDPA_RETENTIONLOG_%HAMDT0D._000000.000000.ctl'\  -
+      &FR3=&REG.SP6.ST.ST.B00.STTDRED.STYP23.D%NYMDT0D            -
+      &TO3=\'/nfs/msa/daplanding/ks/prd/lnd/st/yearly/\   ||      -
+           \STTD_PDPA_RETENTIONLOG_%HAMDT0D._000000.000000.dat'\  -
+      &FR4=&REG.SP6.ST.ST.B00.STTDCNTL.STYP23.D%NYMDT0D           -
+      &TO4=\'/nfs/msa/daplanding/ks/prd/lnd/st/yearly/\   ||      -
+           \STTD_PDPA_RETENTIONLOG_%HAMDT0D._000000.000000.ctl'\  -
+      CASE=YES                                                    -
+      NEWNAME=%ESPAPJOB                                           -
+      &JOBNM=%ESPAPJOB                                            -
+      &SBLANKS=YES                                                -
+      &TRIDSN=&REG.PTF.CD.%ESPAPJOB..D%NYMDT0D
+ SIGNOFF
+//*
