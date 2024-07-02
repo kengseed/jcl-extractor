@@ -3,6 +3,7 @@ import os
 import datetime
 import pathlib
 import shutil
+import re
 import csv
 
 
@@ -50,20 +51,12 @@ def generalCleanupContent(content: str):
     return contentResult
 
 
-def sourceTargetCleanupContent(
-    contents: list[str], mainIndex: int, variableIndex: int
-) -> str:
+def sourceTargetCleanupContent(contents: list[str], mainIndex: int) -> str:
     # Replace &FR
-    contentResult = (
-        contents[mainIndex]
-        .strip()
-        .replace(("&FR{index}=").format(index=variableIndex), "")
-    )
+    contentResult = re.sub(r"&FR\d+=", "", contents[mainIndex].strip())
 
     # Replace &TO
-    contentResult = contentResult.strip().replace(
-        ("&TO{index}=").format(index=variableIndex), ""
-    )
+    contentResult = re.sub(r"&TO\d+=", "", contentResult.strip())
 
     contentResult = generalCleanupContent(contentResult)
 
@@ -98,14 +91,6 @@ def extractScriptToCsv(directory):
             lines = fp.readlines()
 
             # Find keywords "&FR" (Excluded comment lines)
-            # frKeywordResults = list(
-            #     filter(
-            #         lambda c: str(c).find("&FR") > -1
-            #         and not str(c).strip().startswith("//")
-            #         and not str(c).strip().startswith("/*"),
-            #         lines,
-            #     )
-            # )
             frKeywordIndexes = list(
                 filter(
                     lambda i: lines[i].find("&FR") > -1
@@ -116,14 +101,6 @@ def extractScriptToCsv(directory):
             )
 
             # Find keywords "&TO" (Excluded comment lines)
-            # toKeywordResults = list(
-            #     filter(
-            #         lambda c: str(c).find("&TO") > -1
-            #         and not str(c).strip().startswith("//")
-            #         and not str(c).strip().startswith("/*"),
-            #         lines,
-            #     )
-            # )
             toKeywordIndexes = list(
                 filter(
                     lambda i: lines[i].find("&TO") > -1
@@ -134,14 +111,6 @@ def extractScriptToCsv(directory):
             )
 
             # Find keywords "PNODE=" (Excluded comment lines)
-            # pNodeKeywordResults = list(
-            #     filter(
-            #         lambda c: str(c).find("PNODE=") > -1
-            #         and not str(c).strip().startswith("//")
-            #         and not str(c).strip().startswith("/*"),
-            #         lines,
-            #     )
-            # )
             pNodeKeywordIndexes = list(
                 filter(
                     lambda i: lines[i].find("PNODE=") > -1
@@ -152,14 +121,6 @@ def extractScriptToCsv(directory):
             )
 
             # Find keywords "SNODE=" (Excluded comment lines)
-            # sNodeKeywordResults = list(
-            #     filter(
-            #         lambda c: str(c).find("SNODE=") > -1
-            #         and not str(c).strip().startswith("//")
-            #         and not str(c).strip().startswith("/*"),
-            #         lines,
-            #     )
-            # )
             sNodeKeywordIndexes = list(
                 filter(
                     lambda i: lines[i].find("SNODE=") > -1
@@ -170,40 +131,14 @@ def extractScriptToCsv(directory):
             )
 
             # Looping &FR keywords
-            # for i in range(len(frKeywordResults)):
-            #     fileContents.append(
-            #         {
-            #             "jobName": pathlib.Path(f).stem,
-            #             "sourceFileName": sourceTargetCleanupContent(
-            #                 frKeywordResults, i
-            #             ),
-            #             "targetFileName": sourceTargetCleanupContent(
-            #                 toKeywordResults, i
-            #             ),
-            #             "pNode": (
-            #                 generalCleanupContent(pNodeKeywordResults[0])
-            #                 if len(pNodeKeywordResults) > 0
-            #                 else ""
-            #             ),
-            #             "sNode": (
-            #                 generalCleanupContent(sNodeKeywordResults[0])
-            #                 if len(sNodeKeywordResults) > 0
-            #                 else ""
-            #             ),
-            #         }
-            #     )
-
             variableIndex = 1
-
             for mainIndex in frKeywordIndexes:
                 fileContents.append(
                     {
                         "jobName": pathlib.Path(f).stem,
-                        "sourceFileName": sourceTargetCleanupContent(
-                            lines, mainIndex, variableIndex
-                        ),
+                        "sourceFileName": sourceTargetCleanupContent(lines, mainIndex),
                         "targetFileName": sourceTargetCleanupContent(
-                            lines, toKeywordIndexes[variableIndex - 1], variableIndex
+                            lines, toKeywordIndexes[variableIndex - 1]
                         ),
                         "pNode": (
                             generalCleanupContent(lines[pNodeKeywordIndexes[0]])
@@ -217,6 +152,11 @@ def extractScriptToCsv(directory):
                         ),
                     }
                 )
+                print(
+                    ("Extract script:{script} success..").format(
+                        script=pathlib.Path(f).stem
+                    )
+                )
                 if variableIndex < len(frKeywordIndexes):
                     variableIndex += 1
 
@@ -226,4 +166,4 @@ def extractScriptToCsv(directory):
 
 if len(sys.argv) > 1 and sys.argv[1] != "":
     extractScriptToCsv(sys.argv[1])
-    print("Extract Direct Connect Script successful.")
+    print("Extract all scripts successful.")
