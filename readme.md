@@ -1,2 +1,3 @@
 # Instruction
-    1. <TBC>
+    - py direct-connect-extractor.py "<Path for Direct connect scripts>"
+    - py direct-connect-extractor.py "c:\1.12.PPTF.JCLLIB.MASTER/MASTER"
